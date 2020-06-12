@@ -248,7 +248,7 @@ class Calculator extends React.Component {
             <button class="btn-tabs" onClick={() => this.setFresnelC()}>Fresnel al centro</button>
           </li>
           <li class="nav-item">
-            <button class="btn-tabs" onClick={() => this.setFresnelD()}>Fresnel descetralizdo</button>
+            <button class="btn-tabs" onClick={() => this.setFresnelD()}>Fresnel descentralizado</button>
           </li>
         </ul>
         <div class="container-login100">
@@ -319,16 +319,13 @@ class Calculator extends React.Component {
               <h6 class={isHide(2)}>Altura de las torres: {AlturaC2} m</h6>
               <hr></hr>
 
-              <h4 class={isHide(3)}>Zona de fresnel desentralizada</h4>
+              <h4 class={isHide(3)}>Zona de fresnel descentralizada</h4>
               <h6 class={isHide(3)}>Radio al 100%: {FresnelD} m</h6>
               <h6 class={isHide(3)}>Altura de las torres: {AlturaD} m</h6>
               <br></br>
               <h6 class={isHide(3)}>Radio al 66%: {FresnelD2} m</h6>
               <h6 class={isHide(3)}>Altura de las torres: {AlturaD2} m</h6>
               <hr></hr>
-
-              <h5></h5>
-              <h5></h5>
             </div>
           </div>
         </div>
