@@ -40,21 +40,23 @@ function getIRL (_RSl, _Sensibilidad) {
   return (isNaN(res) || !isFinite(res)) ? 0 : res;
 }
 
-function getFresnelC (_Distancia, _Frecuencia) {
+function getFresnelC (_Distancia, _Frecuencia, _Ganancia) {
   const Distancia = Number(_Distancia);
   const Frecuencia = Number(_Frecuencia);
+  const Ganancia = Number(_Ganancia);
 
-  const res = (17.32 * (Math.sqrt(Distancia / (4 * Frecuencia))));
+  const res = ((17.32 * (Math.sqrt(Distancia / (4 * Frecuencia)))) * (Ganancia / 100));
   return (isNaN(res) || !isFinite(res)) ? 0 : res;
 }
 
-function getFresnelD (_Dist1, _Dist2, _Distancia, _Frecuencia) {
+function getFresnelD (_Dist1, _Dist2, _Distancia, _Frecuencia, _Ganancia) {
   const d1 = Number(_Dist1);
   const d2 = Number(_Dist2);
   const Distancia = Number(_Distancia);
   const Frecuencia = Number(_Frecuencia);
+  const Ganancia = Number(_Ganancia);
   
-  const res = (17.32 * (Math.sqrt((d1 * d2) / (_Distancia * Frecuencia))));
+  const res = ((17.32 * (Math.sqrt((d1 * d2) / (Distancia * Frecuencia)))) * (Ganancia / 100));
   return (isNaN(res) || !isFinite(res)) ? 0 : res;
 }
 
@@ -73,8 +75,12 @@ class CreateInput extends React.Component {
 
     return (
       <div class={visible} >
-        <legend>{this.props.name}:</legend>
-        <input value={this.props.value} onChange={this.handleChange} />
+        
+        <label for={this.props.name}>{this.props.name}</label>
+        <input type="email" class="form-control" 
+          id={this.props.name} placeholder={this.props.name}
+          value={this.props.value} onChange={this.handleChange}
+        />
       </div>
     );
   }
@@ -103,9 +109,9 @@ class Calculator extends React.Component {
       _Pcrx: 0,
       _Pcorx: 0,
 
-      _Radio: 0,
       _Dist1: 0,
-      _Dist2: 0
+      _Dist2: 0,
+      _Ganancia: 100,
     };
 
     // Inicio de los controladores de eventos
@@ -123,9 +129,9 @@ class Calculator extends React.Component {
     this.handlePcrxChange = this.handlePcrxChange.bind(this);
     this.handlePcorxChange = this.handlePcorxChange.bind(this);
 
-    this.handleRadioChange = this.handleRadioChange.bind(this);
     this.handleDist1Change = this.handleDist1Change.bind(this);
     this.handleDist2Change = this.handleDist2Change.bind(this);
+    this.handleGananciaChange = this.handleGananciaChange.bind(this);
 
   }
 
@@ -144,15 +150,15 @@ class Calculator extends React.Component {
   handlePcrxChange = (value) => this.setState({_Pcrx : value});
   handlePcorxChange = (value) => this.setState({_Pcorx : value});
 
-  handleRadioChange = (value) => this.setState({_Radio : value});
   handleDist1Change = (value) => this.setState({_Dist1 : value});
   handleDist2Change = (value) => this.setState({_Dist2 : value});
+  handleGananciaChange = (value) => this.setState({_Ganancia : value});
 
   
   // Selección de formulario
   setEnlaces = () => this.setState({CurrentForm : [1,1,1,1,1,1,1,1,1,1,1,0,0,0]});
-  setFresnelC = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,0,0,0]});
-  setFresnelD = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,0,1,1]});
+  setFresnelC = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,0,0,1]});
+  setFresnelD = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,1,1,1]});
 
 
   render() {
@@ -173,7 +179,7 @@ class Calculator extends React.Component {
     const _Pcrx = this.state._Pcrx
     const _Pcorx = this.state._Pcorx
 
-    const _Radio = this.state._Radio
+    const _Ganancia = this.state._Ganancia
     const _Dist1 = this.state._Dist1
     const _Dist2 = this.state._Dist2
 
@@ -182,11 +188,13 @@ class Calculator extends React.Component {
     const PIRE = getPIRE(_Ptx, _Pctx, _Pcotx, _Gtx);
     const RSL = getRSL(PIRE,_Pcrx, _Pcorx, _Grx, FSL);
     const IRL = getIRL(RSL, _Sensibilidad);
-    const FresnelC = getFresnelC(_Distancia, _Frecuencia);
-    const FresnelD = getFresnelD(_Dist1, _Dist2, _Distancia, _Frecuencia);
+    const FresnelC = getFresnelC(_Distancia, _Frecuencia, _Ganancia);
+    const FresnelD = getFresnelD(_Dist1, _Dist2, _Distancia, _Frecuencia, _Ganancia);
+
+    const viable = () => (IRL < 10) ? 'No' : 'Si';
 
     return (
-      <div>
+      <div class="form-group">
         <fieldset>
           <button onClick={() => this.setEnlaces()}>Enlaces</button>
           <button onClick={() => this.setFresnelC()}>Fresnel al centro</button>
@@ -227,15 +235,15 @@ class Calculator extends React.Component {
           <CreateInput name='PCORx' value={_Pcorx} 
             isVisible={isVisible[10]} onValueChange={this.handlePcorxChange} />
 
-          
-          <CreateInput name='Radio' value={_Radio} 
-            isVisible={isVisible[11]} onValueChange={this.handleRadioChange} />
 
           <CreateInput name='Distancia 1' value={_Dist1} 
-            isVisible={isVisible[12]} onValueChange={this.handleDist1Change} />
+            isVisible={isVisible[11]} onValueChange={this.handleDist1Change} />
 
           <CreateInput name='Distancia 2' value={_Dist2} 
-            isVisible={isVisible[13]} onValueChange={this.handleDist2Change} />
+            isVisible={isVisible[12]} onValueChange={this.handleDist2Change} />
+
+          <CreateInput name='Ganancia' value={_Ganancia} 
+            isVisible={isVisible[13]} onValueChange={this.handleGananciaChange} />
 
           <h3>FSL: {FSL}</h3>
           <h3>PIRE: {PIRE}</h3>
@@ -243,6 +251,7 @@ class Calculator extends React.Component {
           <h3>IRL: {IRL}</h3>
           <h3>Zona de fresnel 1: {FresnelC}</h3>
           <h3>Zona de fersnel 2: {FresnelD}</h3>
+          <h3>Viabilidad del enlace: {viable()} </h3>
           
         </fieldset>
       </div>
