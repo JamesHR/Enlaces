@@ -1,8 +1,96 @@
+.btn-tabs{
+  font-family: Montserrat-Bold;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  text-transform: uppercase;
+
+  width: 100%;
+  height: 50px;
+  background: #006d1b;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 25px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.btn-tabs:hover {
+  background: #333333;
+}
+
+.unit-input100 {
+  font-size: 15px; 
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  border-radius: 25px;
+  bottom: 0;
+  padding-left: 70%;
+  right:  0;
+  width: 100%;
+  height: 100%;
+  
+  pointer-events: none;
+  color: #666666;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
 .txt-input {
-    margin: 2px;
+  margin: 2px;
 }
 
 .txt-input-hidden {
-    text-align: right;
-    display:none;  
+  display: none;
+}
+
+.outputs {
+  padding-top: 25px;
+  position: fixed;
+  height: auto;
+  top: 13%;
+  left: 55%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+}
+
+.outputs h4{
+  margin-bottom: 10px;
+}
+
+.outputs h6{
+  margin-bottom: 5px;
+}
+
+.output-hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .outputs {
+    padding-top: 50px;
+    position: static;
+  }
+
+  .unit-input100 {
+    padding-left: 80%;
+  }
 }
