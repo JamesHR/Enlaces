@@ -226,7 +226,14 @@ class Calculator extends React.Component {
     const AlturaD = getAltura(_Obstaculo, FresnelD).toFixed(4);
     const AlturaD2 = getAltura(_Obstaculo, FresnelD2).toFixed(4);
 
-    const viable = () => (IRL < 10) ? 'No' : 'Si';
+    function viable () { 
+      if (IRL < 10) 
+        return 'El enlace no es viable';
+      else if (IRL >= 10 && IRL < 15)
+        return 'El enlace es satisfactorio'
+      else 
+        return 'El enlace es optimo'
+    }
 
     return (
       <div class="limiter">
@@ -301,7 +308,7 @@ class Calculator extends React.Component {
               <h6 class={isHide(1)}>PIRE: {PIRE} dBi</h6>
               <h6 class={isHide(1)}>RSL: {RSL} dBi</h6>
               <h6 class={isHide(1)}>IRL: {IRL} dBi</h6>
-              <h6 class={isHide(1)}>Viabilidad del enlace: {viable()} </h6>
+              <h6 class={isHide(1)}>Viabilidad: {viable()} </h6>
               <hr></hr>
 
               <h4 class={isHide(2)}>Zona de fresnel al centro</h4>
