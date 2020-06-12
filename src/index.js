@@ -22,18 +22,18 @@ function getPIRE(_Ptx, _Pctx, _Pcotx, _Gtx) {
 }
 
 function getRSL(_PIRE, _Pcrx, _Pcorx, _Grx, _FSL) {
-  const PIRE = _PIRE;
+  const PIRE = Number(_PIRE);
   const Pcrx = Math.abs(_Pcrx);
   const Pcorx = Math.abs(_Pcorx);
   const Grx = Number(_Grx);
-  const FSL = _FSL;
+  const FSL = Number(_FSL);
 
   const res = (PIRE + (-Pcrx) + (-Pcorx) + Grx - FSL);
   return (isNaN(res) || !isFinite(res)) ? 0 : res;
 }
 
 function getIRL(_RSl, _Sensibilidad) {
-  const RSL = _RSl;
+  const RSL = Number(_RSl);
   const Sensibilidad = Math.abs(_Sensibilidad);
 
   const res = (RSL - (- Sensibilidad));
@@ -85,10 +85,10 @@ class CreateInput extends React.Component {
     return (
       <div class={visible} >
         <label for={this.props.name}>{this.props.name}</label>
-        <div class="wrap-input100 validate-input" data-validate="Password is required">
+        <div class="wrap-input100 validate-input" >
           <input type="number" class="input100"
             id={this.props.name} placeholder={this.props.name}
-            value={this.props.value} onChange={this.handleChange}
+            value={this.props.value} onChange={this.handleChange }
           />
           <span class="focus-input100"></span>
           <span class="symbol-input100">
