@@ -38,8 +38,26 @@ function getIRL (_RSl, _Sensibilidad) {
   
   const res = (RSL - (- Sensibilidad));
   return (isNaN(res) || !isFinite(res)) ? 0 : res;
-
 }
+
+function getFresnelC (_Distancia, _Frecuencia) {
+  const Distancia = Number(_Distancia);
+  const Frecuencia = Number(_Frecuencia);
+
+  const res = (17.32 * (Math.sqrt(Distancia / (4 * Frecuencia))));
+  return (isNaN(res) || !isFinite(res)) ? 0 : res;
+}
+
+function getFresnelD (_Dist1, _Dist2, _Distancia, _Frecuencia) {
+  const d1 = Number(_Dist1);
+  const d2 = Number(_Dist2);
+  const Distancia = Number(_Distancia);
+  const Frecuencia = Number(_Frecuencia);
+  
+  const res = (17.32 * (Math.sqrt((d1 * d2) / (_Distancia * Frecuencia))));
+  return (isNaN(res) || !isFinite(res)) ? 0 : res;
+}
+
 
 // Controles
 class CreateInput extends React.Component {
@@ -133,7 +151,8 @@ class Calculator extends React.Component {
   
   // Selección de formulario
   setEnlaces = () => this.setState({CurrentForm : [1,1,1,1,1,1,1,1,1,1,1,0,0,0]});
-  setFresnel = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,1,1,1]});
+  setFresnelC = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,0,0,0]});
+  setFresnelD = () => this.setState({CurrentForm : [1,1,0,0,0,0,0,0,0,0,0,0,1,1]});
 
 
   render() {
@@ -163,14 +182,20 @@ class Calculator extends React.Component {
     const PIRE = getPIRE(_Ptx, _Pctx, _Pcotx, _Gtx);
     const RSL = getRSL(PIRE,_Pcrx, _Pcorx, _Grx, FSL);
     const IRL = getIRL(RSL, _Sensibilidad);
+    const FresnelC = getFresnelC(_Distancia, _Frecuencia);
+    const FresnelD = getFresnelD(_Dist1, _Dist2, _Distancia, _Frecuencia);
 
     return (
       <div>
         <fieldset>
+          <button onClick={() => this.setEnlaces()}>Enlaces</button>
+          <button onClick={() => this.setFresnelC()}>Fresnel al centro</button>
+          <button onClick={() => this.setFresnelD()}>Fresnel descetralizdo</button>
+
           <CreateInput name='Frecuencia' value={_Frecuencia}
             isVisible={isVisible[0]} onValueChange={this.handleFrecChange} />
             
-          <CreateInput name='Distancia' value={_Distancia} 
+          <CreateInput name='Distancia total' value={_Distancia} 
             isVisible={isVisible[1]} onValueChange={this.handleDistChange} />
 
           <CreateInput name='Sensibilidad' value={_Sensibilidad} 
@@ -212,14 +237,12 @@ class Calculator extends React.Component {
           <CreateInput name='Distancia 2' value={_Dist2} 
             isVisible={isVisible[13]} onValueChange={this.handleDist2Change} />
 
-
-          <button onClick={() => this.setEnlaces()}>Enlaces</button>
-          <button onClick={() => this.setFresnel()}>Fresnel C</button>
-
-          <h1>FSL: {FSL}</h1>
-          <h1>PIRE: {PIRE}</h1>
-          <h1>RSL: {RSL}</h1>
-          <h1>IRL: {IRL}</h1>
+          <h3>FSL: {FSL}</h3>
+          <h3>PIRE: {PIRE}</h3>
+          <h3>RSL: {RSL}</h3>
+          <h3>IRL: {IRL}</h3>
+          <h3>Zona de fresnel 1: {FresnelC}</h3>
+          <h3>Zona de fersnel 2: {FresnelD}</h3>
           
         </fieldset>
       </div>
